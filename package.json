@@ -1,0 +1,27 @@
+{
+  "name": "@chad.b.morrow/sparkles",
+  "version": "1.0.0",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.0"
+  },
+  "main": "./lib/index.js",
+  "repository": "https://github.com/chadmorrow/sparkles.git",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
+    "@babel/plugin-transform-regenerator": "^7.8.7",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "babel-preset-env": "^1.7.0",
+    "parcel-bundler": "^1.12.4"
+  },
+  "scripts": {
+    "start": "parcel watch lib/index.js",
+    "build": "parcel build lib/index.js",
+    "start-demo": "parcel examples/src/index.html --out-dir examples/dist --open",
+    "build-demo": "parcel build examples/src/index.html --out-dir examples/dist --public-url ./",
+    "publish-demo": "gh-pages -d examples/dist"
+  }
+}
