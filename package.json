@@ -1,5 +1,7 @@
 {
   "name": "@chad.b.morrow/sparkles",
+  "description": "A slight modification of the Sparkles react component created by Josh Comeau at https://joshwcomeau.com/react/animated-sparkles-in-react/",
+  "author": "Chad Morrow",
   "version": "1.0.0",
   "dependencies": {
     "react": "^16.13.1",
