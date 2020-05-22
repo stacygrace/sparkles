@@ -18,7 +18,8 @@
     "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "babel-preset-env": "^1.7.0",
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.12.4",
+    "source-map-explorer": "^2.4.2"
   },
   "scripts": {
     "test": "echo \"No test specified\"",
@@ -26,6 +27,7 @@
     "build": "parcel build lib/index.js",
     "start-demo": "parcel examples/src/index.html --out-dir examples/dist --open",
     "build-demo": "parcel build examples/src/index.html --out-dir examples/dist --public-url ./",
-    "publish-demo": "gh-pages -d examples/dist"
+    "publish-demo": "gh-pages -d examples/dist",
+    "view-source-map": "source-map-explorer --html dist/index.js dist/index.js.map "
   }
 }
