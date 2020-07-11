@@ -1,33 +1,66 @@
 {
   "name": "@chad.b.morrow/sparkles",
-  "description": "A slight modification of the Sparkles react component created by Josh Comeau at https://joshwcomeau.com/react/animated-sparkles-in-react/",
-  "author": "Chad Morrow",
   "version": "1.1.1",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "styled-components": "^5.1.0"
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chadmorrow/sparkles"
   },
-  "main": "./lib/index.js",
-  "repository": "https://github.com/chadmorrow/sparkles.git",
+  "keywords": [
+    "react",
+    "sparkles"
+  ],
+  "author": {
+    "name": "Chad Morrow",
+    "email": "chad.b.morrow@gmail.com"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "styled-components": ">=5.1.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
-    "@babel/plugin-transform-regenerator": "^7.8.7",
-    "@babel/plugin-transform-runtime": "^7.9.6",
-    "@babel/preset-react": "^7.9.4",
-    "babel-preset-env": "^1.7.0",
-    "parcel-bundler": "^1.12.4",
-    "source-map-explorer": "^2.4.2"
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-react": "^7.8.3",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-image": "^2.0.4",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-scripts": "3.4.0",
+    "rollup": "^2.0.6",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^2.4.1",
+    "rollup-plugin-visualizer": "^3.3.1",
+    "styled-components": ">=5.1.0"
   },
   "scripts": {
-    "test": "echo \"No test specified\"",
-    "start": "parcel watch lib/index.js",
-    "build": "parcel build lib/index.js",
-    "start-demo": "parcel examples/src/index.html --out-dir examples/dist --open",
-    "build-demo": "parcel build examples/src/index.html --out-dir examples/dist --public-url ./",
-    "publish-demo": "gh-pages -d examples/dist",
-    "view-source-map": "source-map-explorer --html dist/index.js dist/index.js.map "
+    "start": "react-scripts start",
+    "build": "rollup -c",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

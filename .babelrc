@@ -1,20 +1,3 @@
 {
-  "plugins": [
-    "@babel/transform-runtime",
-    "@babel/transform-regenerator",
-    "@babel/proposal-object-rest-spread"
-  ],
-  "presets": [
-    [
-      "env",
-      {
-        "targets": {
-          "browsers": [
-            "last 2 Chrome versions"
-          ]
-        }
-      }
-    ],
-    "@babel/preset-react"
-  ]
+  "presets": ["@babel/preset-react", "@babel/env"]
 }

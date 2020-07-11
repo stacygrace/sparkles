@@ -1,2 +1,5 @@
-node_modules
-.idea/
+src
+rollup.*
+.babelrc
+.eslintrc
+stats.html

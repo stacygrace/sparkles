@@ -1,10 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import {Sparkles} from "../../lib";
-import {useRainbow} from "../../lib/hooks";
+import React from 'react';
+import {Sparkles, useRainbow } from './lib';
 
-
-function SparkleDemo() {
+function App() {
     let config = {
         rainbowColors: ["hsl(50deg, 100%, 65%)","hsl(210deg, 100%, 65%)","hsl(340deg, 100%, 60%)"]
     }
@@ -15,8 +12,6 @@ function SparkleDemo() {
             <p><Sparkles color={colors}>Hello Beautiful! 😍 </Sparkles></p>
         </main>
     )
-
 }
 
-
-ReactDOM.render(<SparkleDemo/>, document.getElementById("root"));
+export default App;
