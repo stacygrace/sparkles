@@ -1,55 +1,137 @@
-import React, {useState} from "react";
-import styled, {keyframes} from "styled-components";
-import {usePrefersReducedMotion, useRandomInterval} from "../hooks";
-import {random, range} from "../utils";
+import React from 'react';
+import styled, {keyframes} from 'styled-components';
+
+import {generateId, random, range, sample} from '../utils';
+import {useIsOnscreen, usePrefersReducedMotion, useRandomInterval} from '../hooks';
 
 
+const UnstyledButton = styled.button`
+  display: ${props => props.display || 'block'};
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
 
-const DEFAULT_COLOR = "#FFC700"
+  &:focus {
+    outline: 2px auto var(--color-primary);
+    outline-offset: 2px;
+  }
 
-const generateSparkle = color => {
+  &:focus:not(.focus-visible) {
+    outline: none;
+  }
+`;
+
+const defaultGeneratePosition = size => {
+    let style = {};
+    style.left = random(0, 100) + '%';
+    style.zIndex = sample([1, 3])[0];
+
+    if (Math.random() > 0.5) {
+        style.top = size * 0.5;
+    } else {
+        style.bottom = -size * 0.5;
+    }
+
+    return style;
+};
+
+const generateSparkle = (color, minSize, maxSize, generatePosition) => {
+    const size = random(minSize, maxSize);
 
     return {
-        id: String(random(10000, 99999)),
+        id: generateId(),
+        color: sample(color)[0],
+        size,
+        numOfPoints: 4,
         createdAt: Date.now(),
-        color,
-        size: random(10, 25),
-        style: {
-            top: random(0, 100) + '%',
-            left: random(0, 100) + '%',
-        },
+        style: generatePosition(size),
     };
 };
-export const Sparkles = ({ color = [DEFAULT_COLOR], children, ...delegated }) => {
-    const [sparkles, setSparkles] = useState(() => {
-        return range(3).map(() => generateSparkle(color));
+
+export const Sparkles = ({
+                      rate = 250,
+                      variance = 200,
+                      minSize = 10,
+                      maxSize = 20,
+                      colors = ['#FFC700'],
+                      children,
+                      isToggleable = true,
+                      style = {},
+                      generatePosition = defaultGeneratePosition,
+                      ...delegated
+                  }) => {
+    const color = colors === "rainbow" ? [
+        "hsl(50deg, 100%, 65%)",
+        "hsl(210deg, 100%, 65%)",
+        "hsl(340deg, 100%, 60%)",
+    ] : colors
+    const [sparkles, setSparkles] = React.useState(() => {
+
+        return range(3).map(() =>
+            generateSparkle(color, minSize, maxSize, generatePosition)
+        );
     });
+
+    const [isEnabled, setIsEnabled] = React.useState(true);
+    const ref = React.useRef();
+    const isOnscreen = useIsOnscreen(ref);
+
     const prefersReducedMotion = usePrefersReducedMotion();
+
     useRandomInterval(
         () => {
-            let sparkle;
-            if (color.length) {
-                sparkle = generateSparkle(color[Math.floor(Math.random()*color.length)])
-            } else {
-                sparkle = generateSparkle(color);
+            if (!isOnscreen || !isEnabled) {
+                return;
             }
+
+            const sparkle = generateSparkle(
+                color,
+                minSize,
+                maxSize,
+                generatePosition
+            );
+
             const now = Date.now();
+
             const nextSparkles = sparkles.filter(sp => {
                 const delta = now - sp.createdAt;
-                return delta < 750;
+                return delta < 1000;
             });
+
             nextSparkles.push(sparkle);
+
             setSparkles(nextSparkles);
         },
-        prefersReducedMotion ? null : 50,
-        prefersReducedMotion ? null : 450
+        prefersReducedMotion ? null : rate - variance,
+        prefersReducedMotion ? null : rate + variance
     );
-    return (<Wrapper {...delegated}>
+
+    return (
+        <Wrapper
+            ref={ref}
+            as={isToggleable ? UnstyledButton : 'div'}
+            onClick={() => {
+                if (!isToggleable) {
+                    return;
+                }
+                setIsEnabled(!isEnabled);
+            }}
+            style={{
+                ...style,
+                cursor: isToggleable && !prefersReducedMotion ? 'pointer' : 'default',
+            }}
+            {...delegated}
+        >
             {sparkles.map(sparkle => (
                 <Sparkle
                     key={sparkle.id}
                     color={sparkle.color}
                     size={sparkle.size}
+                    numOfPoints={sparkle.numOfPoints}
                     style={sparkle.style}
                 />
             ))}
@@ -57,58 +139,71 @@ export const Sparkles = ({ color = [DEFAULT_COLOR], children, ...delegated }) =>
         </Wrapper>
     );
 };
-const Sparkle = ({ size, color, style }) => {
+
+const Sparkle = ({ size, color, style, numOfPoints = 4 }) => {
     const path =
-        'M26.5 25.5C19.0043 33.3697 0 34 0 34C0 34 19.1013 35.3684 26.5 43.5C33.234 50.901 34 68 34 68C34 68 36.9884 50.7065 44.5 43.5C51.6431 36.647 68 34 68 34C68 34 51.6947 32.0939 44.5 25.5C36.5605 18.2235 34 0 34 0C34 0 33.6591 17.9837 26.5 25.5Z';
+        numOfPoints === 4
+            ? 'M92 0C92 0 96 63.4731 108.263 75.7365C120.527 88 184 92 184 92C184 92 118.527 98 108.263 108.263C98 118.527 92 184 92 184C92 184 86.4731 119 75.7365 108.263C65 97.5269 0 92 0 92C0 92 63.9731 87.5 75.7365 75.7365C87.5 63.9731 92 0 92 0Z'
+            : 'M34 0C34 0 33.4886 20.0074 41.7749 26.3376C50.0612 32.6678 68 25.9737 68 25.9737C68 25.9737 49.7451 31.6449 46.58 41.8873C43.4149 52.1298 55.0132 68 55.0132 68C55.0132 68 44.2424 51.4976 34 51.4976C23.7576 51.4976 12.9868 68 12.9868 68C12.9868 68 24.5851 52.1298 21.42 41.8873C18.2549 31.6449 0 25.9737 0 25.9737C0 25.9737 17.9388 32.6678 26.2251 26.3376C34.5114 20.0074 34 0 34 0Z';
+
     return (
         <SparkleWrapper style={style}>
-            <SparkleSvg width={size} height={size} viewBox="0 0 68 68" fill="none">
+            <SparkleSvg width={size} height={size} viewBox="0 0 184 184" fill="none">
                 <path d={path} fill={color} />
             </SparkleSvg>
         </SparkleWrapper>
     );
 };
+
 const comeInOut = keyframes`
-0% {
-   transform: scale(0);
-}
-50% {
-   transform: scale(1);
-}
-100% {
-   transform: scale(0);
-}
+  0% {
+    transform: translate3d(-50%, -50%, 0) scale(0);
+  }
+  50% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(0);
+  }
 `;
+
 const spin = keyframes`
-0% {
-   transform: rotate(0deg);
-}
-100% {
-   transform: rotate(180deg);
-}
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(100deg);
+  }
 `;
-const Wrapper = styled.span`
-display: inline-block;
-position: relative;
+
+const Wrapper = styled(UnstyledButton)`
+  display: inline-block;
+  position: relative;
+  color: inherit;
+  text-shadow: 0px 0px 3px var(--color-background),
+    1px 1px 1px var(--color-background);
 `;
+
 const SparkleWrapper = styled.span`
-position: absolute;
-display: block;
-@media (prefers-reduced-motion: no-preference) {
-   animation: ${comeInOut} 700ms forwards;
-}
+  position: absolute;
+  display: block;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${comeInOut} 900ms forwards;
+  }
 `;
+
 const SparkleSvg = styled.svg`
-display: block;
-@media (prefers-reduced-motion: no-preference) {
-   animation: ${spin} 1000ms linear;
-}
+  display: block;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${spin} 1000ms linear;
+  }
 `;
+
 const ChildWrapper = styled.strong`
-position: relative;
-z-index: 1;
-font-weight: bold;
+  position: relative;
+  z-index: 2;
+  font-weight: bold;
 `;
-
-
-

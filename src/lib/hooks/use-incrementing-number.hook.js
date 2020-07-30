@@ -1,12 +1,12 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React from 'react';
 
-export function useIncrementingNumber(delay) {
-    const [count, setCount] = useState(0);
+function useIncrementingNumber(delay) {
+    const [count, setCount] = React.useState(0);
 
-    const savedCallback = useRef(() => setCount(c => c + 1));
+    const savedCallback = React.useRef(() => setCount(c => c + 1));
 
     // Set up the interval.
-    useEffect(() => {
+    React.useEffect(() => {
         function tick() {
             savedCallback.current();
         }
@@ -19,3 +19,4 @@ export function useIncrementingNumber(delay) {
     return count;
 }
 
+export default useIncrementingNumber;

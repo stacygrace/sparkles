@@ -1,17 +1,23 @@
 import React from 'react';
-import {Sparkles, useRainbow } from './lib';
+import {Sparkles} from './lib';
+import styled from "styled-components";
 
 function App() {
-    let config = {
-        rainbowColors: ["hsl(50deg, 100%, 65%)","hsl(210deg, 100%, 65%)","hsl(340deg, 100%, 60%)"]
-    }
-    let colors = Object.values(useRainbow(config))
 
     return (
-        <main className="container">
-            <p><Sparkles color={colors}>Hello Beautiful! 😍 </Sparkles></p>
-        </main>
+        <Layout>
+            <h1>
+                <Sparkles colors={"rainbow"}>
+                    Sparkle Sparkle! <span role="img" aria-label="heart-face-emoji">😍</span>
+                </Sparkles>
+            </h1>
+        </Layout>
     )
 }
 
 export default App;
+
+const Layout = styled.main`
+    display: grid;
+    place-items: center;
+    `

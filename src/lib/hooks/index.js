@@ -1,6 +1,6 @@
-import {usePrefersReducedMotion} from "./usePrefersReducedMotion";
-import {useRandomInterval} from "./useRandomInterval";
-import {useIncrementingNumber} from "./useIncrementingNumber";
-import {useRainbow} from "./useRainbow";
+import usePrefersReducedMotion from "./use-prefers-reduced-motion.hook.js";
+import useRandomInterval from "./use-random-interval.hook.js";
+import useIncrementingNumber from "./use-incrementing-number.hook.js";
+import useIsOnscreen from "./use-is-onscreen.hook.js";
 
-export {useIncrementingNumber, useRainbow, useRandomInterval, usePrefersReducedMotion}
+export {useIncrementingNumber, useRandomInterval, usePrefersReducedMotion, useIsOnscreen}
