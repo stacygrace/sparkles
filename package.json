@@ -1,6 +1,6 @@
 {
   "name": "@chad.b.morrow/sparkles",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "files": [
