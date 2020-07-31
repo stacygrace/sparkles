@@ -113,7 +113,7 @@ const Sparkles = ({
     return (
         <Wrapper
             ref={ref}
-            as={isToggleable ? UnstyledButton : 'div'}
+            asElement={isToggleable ? UnstyledButton : 'div'}
             onClick={() => {
                 if (!isToggleable) {
                     return;
